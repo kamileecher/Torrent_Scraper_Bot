@@ -1,9 +1,9 @@
-import aiohttp
 import json
-from pyrogram import Client, filters, emoji
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from config import api_hash, api_id, bot_token, ARQ_API_BASE_URL 
 
+import aiohttp
+from config import ARQ_API_BASE_URL, api_hash, api_id, bot_token
+from pyrogram import Client, emoji, filters
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 app = Client("torrent_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
 
@@ -11,15 +11,17 @@ app = Client("torrent_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_toke
 print("\nBot Started\n")
 
 
-@app.on_message(filters.command(['start']))
+@app.on_message(filters.command(["start"]))
 async def start(_, message):
-    await message.reply_text("Hello I'm Torrent Scraper Bot\nSend Command 'help' To Show Help Screen, Join @TheHamkerChat For Support.")
+    await message.reply_text(
+        "Hello I'm Torrent Scraper Bot\nSend Command 'help' To Show Help Screen, Join @TheHamkerChat For Support."
+    )
 
 
-
-@app.on_message(filters.command(['help']))
+@app.on_message(filters.command(["help"]))
 async def help(_, message):
     await message.reply_text("/torrent query, To Search For Torrents")
+
 
 m = None
 i = 0
@@ -44,8 +46,7 @@ async def torrent(_, message):
     m = await message.reply_text("Searching")
     try:
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"{ARQ_API_BASE_URL}torrent?query={query}") \
-                    as resp:
+            async with session.get(f"{ARQ_API_BASE_URL}torrent?query={query}") as resp:
                 a = json.loads(await resp.text())
     except:
         await m.edit("Found Nothing.")
@@ -64,10 +65,12 @@ async def torrent(_, message):
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton(f"Next {emoji.RIGHT_ARROW}",
-                                         callback_data="next"),
-                    InlineKeyboardButton(f"Delete {emoji.CROSS_MARK}",
-                                         callback_data="delete")
+                    InlineKeyboardButton(
+                        f"Next {emoji.RIGHT_ARROW}", callback_data="next"
+                    ),
+                    InlineKeyboardButton(
+                        f"Delete {emoji.CROSS_MARK}", callback_data="delete"
+                    ),
                 ]
             ]
         ),
@@ -96,13 +99,15 @@ async def callback_query_next(_, message):
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton(f"{emoji.LEFT_ARROW} Previous",
-                                         callback_data="previous"),
-                    InlineKeyboardButton(f"Next {emoji.RIGHT_ARROW}",
-                                         callback_data="next"),
-                    InlineKeyboardButton(f"Delete {emoji.CROSS_MARK}",
-                                         callback_data="delete")
-
+                    InlineKeyboardButton(
+                        f"{emoji.LEFT_ARROW} Previous", callback_data="previous"
+                    ),
+                    InlineKeyboardButton(
+                        f"Next {emoji.RIGHT_ARROW}", callback_data="next"
+                    ),
+                    InlineKeyboardButton(
+                        f"Delete {emoji.CROSS_MARK}", callback_data="delete"
+                    ),
                 ]
             ]
         ),
@@ -131,12 +136,15 @@ async def callback_query_previous(_, message):
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton(f"{emoji.LEFT_ARROW} Previous",
-                                         callback_data="previous"),
-                    InlineKeyboardButton(f"Next {emoji.RIGHT_ARROW}",
-                                         callback_data="next"),
-                    InlineKeyboardButton(f"Delete {emoji.CROSS_MARK}",
-                                         callback_data="delete")
+                    InlineKeyboardButton(
+                        f"{emoji.LEFT_ARROW} Previous", callback_data="previous"
+                    ),
+                    InlineKeyboardButton(
+                        f"Next {emoji.RIGHT_ARROW}", callback_data="next"
+                    ),
+                    InlineKeyboardButton(
+                        f"Delete {emoji.CROSS_MARK}", callback_data="delete"
+                    ),
                 ]
             ]
         ),
