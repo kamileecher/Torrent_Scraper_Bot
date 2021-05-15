@@ -1,7 +1,7 @@
 import json
 
 import aiohttp
-from config import ARQ_API_BASE_URL, api_hash, api_id, bot_token
+from config import ARQ_API_BASE_URL, ARQ_API_KEY, api_hash, api_id, bot_token
 from pyrogram import Client, emoji, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
@@ -46,7 +46,10 @@ async def torrent(_, message):
     m = await message.reply_text("Searching")
     try:
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"{ARQ_API_BASE_URL}torrent?query={query}") as resp:
+            headers = {"X-API-KEY": ARQ_API_KEY}
+            async with session.get(
+                f"{ARQ_API_BASE_URL}torrent?query={query}", headers=headers
+            ) as resp:
                 a = json.loads(await resp.text())
     except:
         await m.edit("Found Nothing.")
